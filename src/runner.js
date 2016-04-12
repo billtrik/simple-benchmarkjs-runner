@@ -8,7 +8,9 @@ export default class BenchmarkRunner {
 
     this.suite = new Benchmark.Suite(options.title, {
       'onStart': () => {
-        console.log(`Starting ${options.title} benchmarking`);
+        if (options.title) {
+          console.log(`Starting benchmark: "${options.title}"`);
+        }
       },
       'onCycle': (event) => {
         console.log(String(event.target));
