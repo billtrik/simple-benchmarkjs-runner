@@ -15,6 +15,9 @@ export default class BenchmarkRunner {
       'onCycle': (event) => {
         console.log(String(event.target));
       },
+      'onError': (event) => {
+        console.log('Error:', String(event.target.error));
+      },
       'onComplete': function () {
         console.log('Fastest is ' + this.filter('fastest').map('name'));
       }
