@@ -9,13 +9,23 @@ const isSame = (array1, array2) => {
 }
 
 export default class BenchmarkRunner {
-  constructor(options) {
-    options = options || {};
+  constructor(suites) {
+    if (!suites) {
+      throw Error('You should pass sth');
+    }
 
-    this.suite = new Benchmark.Suite(options.title, {
+    if (!_.isArray(suites)) {
+      suites = [suites];
+    }
+
+    suites.forEach((suite) => this.runSuite(suite))
+  }
+
+  runSuite(suite) {
+    const instance = new Benchmark.Suite(suite.title, {
       'onStart': () => {
-        if (options.title) {
-          console.log(`Starting benchmark: "${options.title}"`);
+        if (suite.title) {
+          console.log(`Starting benchmark: "${suite.title}"`);
         }
       },
       'onCycle': (event) => {
@@ -25,7 +35,7 @@ export default class BenchmarkRunner {
         console.log('Error:', String(event.target.error));
       },
       'onComplete': function () {
-        const allTestKeys = _.pluck(options.tests, 'title');
+        const allTestKeys = _.pluck(suite.tests, 'title');
         const resultingTestKeys = this.filter('fastest').map('name');
         const text = resultingTestKeys.length === 1 ? 'Fastest is' : 'Fastest are';
 
@@ -38,10 +48,10 @@ export default class BenchmarkRunner {
       }
     });
 
-    options.tests.forEach((testObj) => {
-      this.suite.add(testObj.title, testObj.fn);
+    suite.tests.forEach((testObj) => {
+      instance.add(testObj.title, testObj.fn);
     })
 
-    this.suite.run({'async': true});
+    instance.run();
   }
 }
