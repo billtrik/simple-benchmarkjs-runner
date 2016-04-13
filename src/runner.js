@@ -1,6 +1,12 @@
 import Benchmark from 'benchmark';
+import _ from 'underscore';
 
 Benchmark.options.initCount = 3;
+
+const isSame = (array1, array2) => {
+  return array1.length === array2.length &&
+         array1.every((element) => array2.includes(element));
+}
 
 export default class BenchmarkRunner {
   constructor(options) {
@@ -19,7 +25,16 @@ export default class BenchmarkRunner {
         console.log('Error:', String(event.target.error));
       },
       'onComplete': function () {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
+        const allTestKeys = _.pluck(options.tests, 'title');
+        const resultingTestKeys = this.filter('fastest').map('name');
+        const text = resultingTestKeys.length === 1 ? 'Fastest is' : 'Fastest are';
+
+        if (isSame(allTestKeys, resultingTestKeys)) {
+          console.log('No winner. They are all (roughly) the same.');
+          return;
+        }
+
+        console.log(`${text} "${resultingTestKeys.join(', ')}"!`);
       }
     });
 
