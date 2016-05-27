@@ -1,7 +1,7 @@
 simple-benchmarkjs-runner [![NPM version](https://badge.fury.io/js/simple-benchmarkjs-runner.svg)](http://badge.fury.io/js/simple-benchmarkjs-runner)
 =============
 
-A simple runner for [benchmark.js](https://benchmarkjs.com/). 
+A simple runner for [benchmark.js](https://benchmarkjs.com/).
 It abstracts the benchmark.js API and provides a config-like way to execute your benchmarking.
 
 Installation
@@ -29,7 +29,7 @@ new BenchmarkRunner({
     },
     {
       title: 'Implementation 2',
-      fn: () => impl2() 
+      fn: () => impl2()
     }
   ]
 });
@@ -41,6 +41,14 @@ Implementation 1 x 13,244 ops/sec ±6.60% (66 runs sampled)
 Implementation 2 x 15,724 ops/sec ±3.05% (83 runs sampled)
 Fastest is Implementation 2
 ```
+
+Execution
+---------
+To run a benchmark from the command line
+```
+./node_modules/.bin/babel-node [path-to-your-file].js
+```
+In case you don't have `babel-node` installed as a dependency run `npm install babel-cli --save-dev`
 
 License
 -------
